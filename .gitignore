@@ -1,0 +1,12 @@
+.Rhistory
+.RData
+.Ruserdata
+.Rproj.user/
+*.Rcheck/
+*.tar.gz
+docs/
+Meta/
+doc/
+inst/doc/
+data/
+!data/.gitkeep

@@ -1,0 +1,10 @@
+citHeader("To cite spatialMIFtools in publications, use:")
+
+citEntry(
+  entry = "Manual",
+  title = "spatialMIFtools: Patient-Level Spatial Analysis of Multiplex Tissue Imaging Data",
+  author = personList(as.person("Sagnik Bhadury")),
+  year = "2026",
+  note = "R package version 0.1.0",
+  url = "https://github.com/sagnikbhadury/spatialMIFtools"
+)

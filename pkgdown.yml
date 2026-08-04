@@ -1,0 +1,30 @@
+url: https://sagnikbhadury.github.io/spatialMIFtools/
+template:
+  bootstrap: 5
+reference:
+- title: Data preparation
+  contents:
+  - validate_mif_cells
+  - bin_mif_cells
+  - add_epithelial_zones
+  - simulate_mif_cells
+- title: Spatial summaries
+  contents:
+  - four_nn_autocorrelation
+  - fit_spatial_neighborhoods
+  - assign_neighborhoods
+  - patient_neighborhood_prevalence
+- title: Networks and inference
+  contents:
+  - ridge_partial_correlation
+  - residualize_cellularity
+  - estimate_ridge_networks
+  - patient_edge_contrasts
+  - ordered_zone_gee
+  - patient_label_permutation
+  - cross_pair_enrichment
+- title: Prediction and orchestration
+  contents:
+  - nested_lopo_prediction
+  - run_spatial_mif_pipeline
+  - spatial_methods_workbench_adapter

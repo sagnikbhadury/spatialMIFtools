@@ -1,0 +1,84 @@
+---
+title: "Patient-level spatial mIF workflow"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Patient-level spatial mIF workflow}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup}
+library(spatialMIFtools)
+set.seed(20260803)
+phenotypes <- c("Epithelial", "APC", "Treg", "CTL", "HelperT")
+```
+
+## Sampling unit and input contract
+
+One row must represent one physical cell. `patient` is the independent sampling
+unit; `image` identifies repeated fields; `group` defines the pathology
+contrast. Coordinates are numeric and phenotype calls are binary. Overlapping
+positive calls are allowed when they are part of the supplied annotation.
+
+```{r data}
+cells <- simulate_mif_cells(12, 2, 180)
+validate_mif_cells(cells, phenotypes)
+```
+
+## Grids and epithelial-density zones
+
+```{r grid}
+grids <- bin_mif_cells(cells, phenotypes, nx = 12, ny = 9, min_cells = 5)
+zones <- add_epithelial_zones(grids, epithelial = "Epithelial", sigma = 1.25)
+table(zones$tumor_zone)
+```
+
+The density variables are log counts per fixed image area, not within-bin
+proportions. Q1--Q4 are computed from within-image ranks of a smoothed
+epithelial count surface. They are not absolute thresholds or temporal stages.
+
+## Neighborhoods and conditional networks
+
+```{r neighborhoods}
+neighborhoods <- fit_spatial_neighborhoods(zones, phenotypes, k_range = 3:5)
+assigned <- assign_neighborhoods(neighborhoods, zones)
+patient_neighborhood_prevalence(assigned)
+```
+
+```{r networks}
+networks <- estimate_ridge_networks(assigned, phenotypes)
+adjusted <- estimate_ridge_networks(
+  assigned, phenotypes, adjust_cellularity = TRUE
+)
+patient_edge_contrasts(adjusted, c("Group1", "Group2"))
+```
+
+An adjusted edge conditions on the other measured phenotype-density fields and
+on the specified linear total-cellularity nuisance model. It remains a
+statistical association.
+
+## Fully nested prediction
+
+```{r prediction, eval=FALSE}
+scores <- nested_lopo_prediction(
+  assigned,
+  phenotypes,
+  group_levels = c("Group1", "Group2"),
+  feature_set = "combined",
+  k_range = 3:5
+)
+attr(scores, "auc")
+```
+
+Every LOPO fold relearns density scaling, K, centers, held-out assignments,
+predictor scaling, and ridge-logistic coefficients. The result is internal
+patient-level discrimination, not external clinical validation.
+
+## Optional Python backend
+
+```{r python, eval=FALSE}
+if (python_backend_available()) {
+  py <- spatial_mif_python()
+  py$partial_correlation(matrix(rnorm(500), ncol = 5), ridge = 0.15)
+}
+```

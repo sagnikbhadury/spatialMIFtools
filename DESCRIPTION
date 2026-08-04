@@ -1,0 +1,31 @@
+Package: spatialMIFtools
+Title: Patient-Level Spatial Analysis of Multiplex Tissue Imaging Data
+Version: 0.1.0
+Authors@R: person("Sagnik", "Bhadury", role = c("aut", "cre"),
+    email = "sagnikbhadury@users.noreply.github.com")
+Description: Patient-aware analysis of two-dimensional multiplex tissue imaging
+    data. Functions construct area-normalized phenotype-density grids,
+    within-image epithelial-density zones, recurrent spatial neighborhoods,
+    ridge conditional networks, total-cellularity-adjusted networks,
+    patient-level pathology contrasts, ordered zone interactions, random-label
+    cross-pair enrichment, label-permutation tests, and fully nested
+    leave-one-patient-out prediction. The package keeps patients as independent
+    sampling units and treats images and spatial bins as nested observations.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Depends: R (>= 4.2.0)
+Imports:
+    stats,
+    utils
+Suggests:
+    geepack,
+    knitr,
+    rmarkdown,
+    reticulate,
+    SpatialMethodsWorkbench
+VignetteBuilder: knitr
+SystemRequirements: Python (>= 3.10), numpy, pandas, scipy, scikit-learn,
+    statsmodels (optional Python backend)
+URL: https://github.com/sagnikbhadury/spatialMIFtools
+BugReports: https://github.com/sagnikbhadury/spatialMIFtools/issues
+Config/roxygen2/version: 8.0.0
