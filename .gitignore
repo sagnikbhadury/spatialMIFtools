@@ -10,3 +10,5 @@ doc/
 inst/doc/
 data/
 !data/.gitkeep
+__pycache__/
+*.py[cod]
